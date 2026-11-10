@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>KWG PANEL</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      background-color: #0b0f19;
+      color: #f8fafc;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Fullscreen Gaming Splash Screen */
+    #splash-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      transition: opacity 0.5s ease-out;
+      position: relative;
+    }
+
+    /* Glowing Gaming Logo */
+    .logo-container {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .spinner-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid rgba(56, 189, 248, 0.15);
+      border-top-color: #38bdf8;
+      border-right-color: #0284c7;
+      animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
+    }
+
+    .game-icon {
+      font-size: 42px;
+      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6));
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    /* App Title */
+    .app-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #f8fafc;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+    }
+
+    .status-text {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 30px;
+      min-height: 20px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    /* Progress Bar */
+    .progress-track {
+      width: 260px;
+      max-width: 80vw;
+      height: 6px;
+      background: #1e293b;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #334155;
+      position: relative;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #0284c7, #38bdf8);
+      border-radius: 10px;
+      box-shadow: 0 0 12px #38bdf8;
+      transition: width 0.1s linear;
+    }
+
+    .percent-text {
+      margin-top: 10px;
+      font-size: 0.75rem;
+      color: #38bdf8;
+      font-family: monospace;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Gaming Splash Screen Overlay -->
+  <div id="splash-container">
+    <div class="logo-container">
+      <div class="spinner-ring"></div>
+      <div class="game-icon">🎮</div>
+    </div>
+
+    <div class="app-title">KWG PANEL</div>
+    <div class="status-text" id="status-text">Connecting to game server...</div>
+
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <div class="percent-text" id="percent-text">Loading 0%</div>
+  </div>
+
+  <script>
+    const TARGET_URL = "https://kwg08.com/#/register?invitationCode=943E651356";
+    const statusText = document.getElementById("status-text");
+    const progressFill = document.getElementById("progress-fill");
+    const percentText = document.getElementById("percent-text");
+    const splashContainer = document.getElementById("splash-container");
+
+    let progress = 0;
+    const totalDuration = 3500; // 3.5 seconds
+    const intervalTime = 35;
+    const step = 100 / (totalDuration / intervalTime);
+
+    const timer = setInterval(() => {
+      progress += step;
+      if (progress > 100) progress = 100;
+
+      const rounded = Math.floor(progress);
+      progressFill.style.width = rounded + "%";
+      percentText.textContent = "Loading " + rounded + "%";
+
+      if (rounded < 30) {
+        statusText.textContent = "Connecting to game server...";
+      } else if (rounded < 70) {
+        statusText.textContent = "Syncing gaming resources...";
+      } else if (rounded < 95) {
+        statusText.textContent = "Configuring secure session...";
+      } else {
+        statusText.textContent = "Ready! Redirecting...";
+      }
+
+      if (progress >= 100) {
+        clearInterval(timer);
+        setTimeout(() => {
+          splashContainer.style.opacity = "0";
+          setTimeout(() => {
+            window.location.replace(TARGET_URL);
+          }, 300);
+        }, 200);
+      }
+    }, intervalTime);
+  </script>
+</body>
+</html>

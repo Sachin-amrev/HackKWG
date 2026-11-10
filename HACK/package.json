@@ -1,0 +1,13 @@
+{
+  "name": "kwg-hybrid-application",
+  "version": "1.0.0",
+  "description": "Cross-platform Web & Android APK application with isolated APK state management for KWG",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
